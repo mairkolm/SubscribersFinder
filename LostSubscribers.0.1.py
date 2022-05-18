@@ -80,7 +80,7 @@ for device in devices.keys():
             f.write(output) 
     new_connection.close()
     
-    # guardamos archivo con todos los logs
+
     with open(outputFileName, 'r') as f:
         ConfigAsList = f.read().splitlines()
         BufferLine=[]
