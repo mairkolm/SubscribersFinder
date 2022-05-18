@@ -1,4 +1,4 @@
-import paramiko, maskpass, time, json, re, itertools
+import paramiko, maskpass, time, json, re
 
 
 username = input('Username: ')
@@ -60,7 +60,7 @@ def ListIntersect(list1, list2):
     d = set(list1).intersection(set(list2))
     return list(d)
 
-# Comenzamos el Loop para cada device, primero la conexion al equipo
+
 for device in devices.keys(): 
     outputFileName = device + '_output.txt'
     connection = paramiko.SSHClient()
@@ -116,7 +116,6 @@ for device in devices.keys():
 
 
 
-        ## Comienza el parceo
             # Authentication
         for i in AuthFailures:
             i = ParseSubscriber(i)            
@@ -125,7 +124,7 @@ for device in devices.keys():
 
             AuthFailuresParsed.append(i)    
 
-        # Non Existed SID 
+
         for i in ServFailures:
             i = ParseSubscriber(i)            
             i = CleanStrToList(i)        
@@ -194,7 +193,7 @@ for device in devices.keys():
 
     bgptotalparsed = ListUnion(IpBgpMD5FailuresParsed, BGPClosedParsed)
     BGPproblems=ListIntersect(bgptotalparsed, KnownBGP)
-    # Imprimir BGP MD5 Errors para BGP
+
     print('###############################################################################################')
     if BGPproblems==[]:
         print(f'{device} NO USERS WITH MD5 AUTHENTICATION ISSUES ARE REPORTED IN BGP AT {device}')
@@ -206,7 +205,7 @@ for device in devices.keys():
 
 
 
-    # Imprimir BGP POLICY GROUPS Errors
+ 
     print('###############################################################################################')
     if IpBgpGroupFailuresParsed==[]:
         print(f'{device} NO USERS WITH MIS CONFIGURATION ISSUES ARE REPORTED FOR BGP-POLICY-GROUP RADIUS ATT. IN {device}')
@@ -228,7 +227,7 @@ for device in devices.keys():
 
 
 
-    # comparar con problemas de authenticacion conocidos
+
     aa = ListDelta(AuthFailuresParsed, KnownUsers)
     if aa == []:
         print(f'{device} USERS WITH AUTHENTICATION PROBLEMS ARE NOT REPORTED BASED ON THE KNOWN LIST IN {device}')
@@ -240,7 +239,6 @@ for device in devices.keys():
 
 
 
-    # Imprimir Framed-Routes Errors
     print('###############################################################################################')
     if FramedFailuresParsed==[]:
         print(f'{device} USERS WITH FRAMED-ROUTE RADIUS ATT PROBLEMS ARE NOT REPORTED. IN {device}')
@@ -252,7 +250,7 @@ for device in devices.keys():
 
 
 
-    # Imprimir Service-id Errors
+
     print('###############################################################################################')
     if ServFailuresParsed == []:
         print(f'{device} USERS WITH SERVICE-ID ISSUES ARE NOT REPORTED IN {device}')
