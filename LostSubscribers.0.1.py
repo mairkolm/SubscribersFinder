@@ -8,10 +8,10 @@ max_buffer = 65535
 
 with open('commands.txt', 'r') as f: 
     commands = f.readlines()
-# abriendo inventario de equipos
+
 with open('inventory.json', 'r') as f:
     devices = json.load(f)
-# abriendo archivo de usuarios fallidos conocidos
+
 with open('KnownFailedUsers.txt', 'r') as f:
     KnownUsers = f.read().splitlines()
 with open('BGPFailedUsers.txt', 'r') as f:
