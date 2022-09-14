@@ -18,8 +18,6 @@ with open('KnownFailedUsers.txt', 'r') as f:
 with open('BGPFailedUsers.txt', 'r') as f:
     KnownBGP = f.read().splitlines()
 
-
-
 def clear_buffer(connection):
     if connection.recv_ready():
         return connection.recv(max_buffer)
@@ -27,7 +25,6 @@ def clear_buffer(connection):
 def ParseSubscriber(lista):
     a = str(re.findall(r'[\$\][\w\.-]+@[\w\.-]+', lista))
     return a
-
 
 def CleanStrToList(word):
     b = word.replace("[", "")
@@ -42,11 +39,9 @@ def IpParser(string):
     a = a.replace(")", "")         
     return a
 
-
 def ListDelta(list1, list2):
     list_difference = [item for item in set(list1) if item not in set(list2)]
     return list_difference
-
 
 def ListCompare(list1, list2):
     c = set(list1).union(set(list2))
@@ -60,7 +55,6 @@ def ListUnion(list1, list2):
 def ListIntersect(list1, list2):
     d = set(list1).intersection(set(list2))
     return list(d)
-
 
 def main():
     for device in devices.keys(): 
@@ -116,45 +110,34 @@ def main():
                 elif re.search("Connect", i) != None:
                     BGPClosed.append(BufferLine[-2])
 
-
-
-
-                # Authentication
+        # Authentication
             for i in AuthFailures:
                 i = ParseSubscriber(i)            
                 i = CleanStrToList(i)
-
-
                 AuthFailuresParsed.append(i)    
-
 
             for i in ServFailures:
                 i = ParseSubscriber(i)            
                 i = CleanStrToList(i)        
                 ServFailuresParsed.append(i)    
 
-
-            # IP BGP
+        # IP BGP
             for i in BgpGroupFailures:
                 i = IpParser(i)
                 i = CleanStrToList(i)   
                 IpBgpGroupFailuresParsed.append(i)
     
-
-            # BGP-POLICY
+        # BGP-POLICY
             for i in BgpGroupFailures:
                 i = str(re.findall(r'[\w\.-]+-[\w\.-]+-([0-9]{1,9})', i))
                 i = CleanStrToList(i)  
-                PolicyBgpGroupFailuresParsed.append(i)
-    
+                PolicyBgpGroupFailuresParsed.append(i)    
 
-
-            # MD5 Authentication
+        # MD5 Authentication
             for i in BgpMD5Failures:
                 i = IpParser(i)
                 i = CleanStrToList(i)
                 IpBgpMD5FailuresParsed.append(i)
-    
 
             for i in BgpMD5Failures:
                 i = str(re.findall(r'[0-9]{1,9}[\w][\s]+TCP', i))
@@ -162,16 +145,13 @@ def main():
                 i = CleanStrToList(i)
                 SidBgpMD5FailuresParsed.append(i)
 
-
-
+        # Framed Authentication
             for i in FramedFailures:
                 i = ParseSubscriber(i)            
                 i = CleanStrToList(i)       
                 FramedFailuresParsed.append(i)
 
-
-
-            # BGP Connect
+        # BGP Connect
             for i in BGPClosed:
                 i = IpParser(i)
                 i = CleanStrToList(i)
@@ -179,24 +159,12 @@ def main():
                 BGPClosedParsed.append(i)
     
 
-        print("""
-
-
-            """)
-
+        print('\n' *5)
         print(f'RUNNING THE TEST ON DEVICE {device}')
-        print("""
-
-
-            """)
-
+        print('\n' *5)
         print('###############################################################################################')
-
-
-
         bgptotalparsed = ListUnion(IpBgpMD5FailuresParsed, BGPClosedParsed)
         BGPproblems=ListIntersect(bgptotalparsed, KnownBGP)
-
         print('###############################################################################################')
         if BGPproblems==[]:
             print(f'{device} NO USERS WITH MD5 AUTHENTICATION ISSUES ARE REPORTED IN BGP AT {device}')
@@ -204,11 +172,7 @@ def main():
             setlist=set(BGPproblems)
             print(f'{device} USERS WITH MD5 AUTHENTICATION PROBLEM IN BGP IN {device} ACCORDING TO THE LIST ARE: ')
             for users in setlist:
-                print(users)
-
-
-
-    
+                print(users)  
         print('###############################################################################################')
         if IpBgpGroupFailuresParsed==[]:
             print(f'{device} NO USERS WITH MIS CONFIGURATION ISSUES ARE REPORTED FOR BGP-POLICY-GROUP RADIUS ATT. IN {device}')
@@ -217,19 +181,11 @@ def main():
             print(f'{device} USERS WITH BGP-POLICY-GROUP ISSUES IN {device} ARE: ')
             for users in setlist:
                 print(users)
-
             for ip, bgpgroup in zip(IpBgpGroupFailuresParsed, PolicyBgpGroupFailuresParsed):
                 if not (ip=='' and bgpgroup==''):
-                    print('')
-                    print('')
-                    print('')
+                    print('\n' *5)
                     print('THE FOLLOWING BGP POLICIES ARE INVALID')
                     print(f'{ip}:       BGP-POLICY-GROUP-{bgpgroup}')
-
-
-
-
-
 
         aa = ListDelta(AuthFailuresParsed, KnownUsers)
         if aa == []:
@@ -238,10 +194,6 @@ def main():
             print(f'{device} USERS IN {device} WITH AUTHENTICATION PROBLEMS BASED ON  LIST ARE AS FOLLOWS:')
             for users in aa:
                 print(users)
-
-
-
-
         print('###############################################################################################')
         if FramedFailuresParsed==[]:
             print(f'{device} USERS WITH FRAMED-ROUTE RADIUS ATT PROBLEMS ARE NOT REPORTED. IN {device}')
@@ -250,10 +202,6 @@ def main():
             print(f'{device} USERS WITH FRAMED-ROUTE RADIUS ATT ISSUE IN {device} ARE: ')
             for users in setlist:
                 print(users)
-
-
-
-
         print('###############################################################################################')
         if ServFailuresParsed == []:
             print(f'{device} USERS WITH SERVICE-ID ISSUES ARE NOT REPORTED IN {device}')
@@ -262,22 +210,10 @@ def main():
             print(f'{device} USERS WITH SERVICE-ID ISSUES IN {device} ARE: ')
             for users in setlist:
                 print(users)
-
-
-
         print('###############################################################################################')
-
-
-        print("""
-
-
-            """)
-
+        print('\n' *5)
         print(f'TEST EXECUTED SUCCESSFULLY ON DEVICE {device}')
-        print("""
-
-
-            """)
+        print('\n' *5)
 
 if __name__ == "__main__":
     main()
