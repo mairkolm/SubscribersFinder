@@ -1,7 +1,7 @@
 # SubscribersFinder
-Finding BNGs/LNS PPP Subscribers with errors during migration windows
+This Script could find PPP Subscribers with are presenting errors in RADIUS.
 
-The script detects subscribers with errors and that cannot be authenticated by RADIUS, basically the list of the commands is defined in commands.txt, you can define new commands if you want to customize it or run someother checks.
+The main script detects PPP subscribers what are presenting errors and could not be authenticated by RADIUS, The list of the commands is defined in commands.txt, you can define new commands if you want to customize it or run someother checks.
 
 The list of the device is define in the inventory.json.
 
