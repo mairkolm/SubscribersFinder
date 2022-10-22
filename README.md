@@ -1,5 +1,5 @@
 # SubscribersFinder
-This Script could find PPP Subscribers with are presenting errors in RADIUS.
+This Script could find PPP Subscribers wath are presenting errors in RADIUS.
 
 The main script detects PPP subscribers what are presenting errors therefore could not be authenticated by RADIUS, The list of the commands is defined in commands.txt, you can define new commands if you want to customize it or run someother checks.
 
